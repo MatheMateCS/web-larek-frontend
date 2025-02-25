@@ -61,7 +61,7 @@ yarn build
 * категория
 * цена товара
 
-Товары нжны для хранения в двух контейнерах: в **каталоге** и в **корзине**
+Товары нужны для хранения в двух контейнерах: в **каталоге** и в **корзине**
 
 В процессе оформления заказа также будет накапливаться информация о пользователе. По итогу, можно представить объект со следующими свойствами: 
 
@@ -179,8 +179,8 @@ Order = {
 
 ```ts
 interface IProductCollection {
-    amount: number;
-    items: ProductItem[];
+    __amount: number;
+    __items: ProductItem[];
 
     getItems(): ProductItem[];
     isEmpty(): boolean;
@@ -202,6 +202,7 @@ interface IBusket extends IProductCollection {
     add(): void;
     remove(id: string): void;
     clear(): void;
+    calcTotalSum(): number;
 }
 ```
 
@@ -229,7 +230,7 @@ OrderInfo = UserInfo & ProductList
 
 ```ts
 interface IUser {
-    info: UserInfo;
+    __info: UserInfo;
 
     constructor(): void;
     setPaymentType(payment: PaymentType): void;
@@ -347,3 +348,21 @@ interface IModalForm extends IModal {
     form: IForm;
 }
 ```
+
+### UML-диаграммы интерфейсов
+
+Объекты при вз-ии с API:
+
+![API](./docs/images/api.png)
+
+Модель:
+
+![Model](./docs/images/model.png)
+
+Брокер событий:
+
+![Presenter](./docs/images/presenter.png)
+
+Представление:
+
+![View](./docs/images/view.png)
