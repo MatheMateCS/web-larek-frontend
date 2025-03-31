@@ -2,7 +2,7 @@ import { IBasket, BasketInfo } from "../../types";
 import { ensureElement } from "../../utils/utils";
 import { Component } from "./Component";
 
-export class Basket extends Component<BasketInfo> {
+export abstract class Basket extends Component<BasketInfo> {
     protected _basketListElement: HTMLUListElement;
     protected _basketButtonElement: HTMLButtonElement;
     protected _totalSumElement: HTMLSpanElement;
