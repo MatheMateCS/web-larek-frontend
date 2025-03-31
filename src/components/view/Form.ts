@@ -2,37 +2,37 @@ import { IForm, FormInfo } from "../../types";
 import { ensureElement } from "../../utils/utils";
 import { Component } from "./Component";
 
-export abstract class Form<Subject> extends Component<FormInfo> {
+export abstract class Form<T> extends Component<FormInfo> {
     private __submitButtonElement: HTMLButtonElement;
     private __errorElement: HTMLSpanElement;
 
     constructor(protected _container: HTMLFormElement, 
-                protected _handlers?: Partial<IForm<Subject>>) {
+                protected _handlers?: Partial<IForm<T>>) {
         super(_container);
 
         this.__submitButtonElement = ensureElement<HTMLButtonElement>('button[type=submit]', this._container);
         this.__errorElement = ensureElement<HTMLSpanElement>('.form__errors', this._container);
 
-        if (this._handlers?.onInput) {
-            this._container.addEventListener('input', this._onInputChange);
+        if (_handlers?.onInput) {
+            this._container.addEventListener('input', this.onInputChange);
         }
 
-        if (this._handlers?.onSubmit) {
-            this._container.addEventListener('submit', this._onSubmit);
+        if (_handlers?.onSubmit) {
+            this._container.addEventListener('submit', this.submitHandler);
         }
 
     }
 
-    private _onInputChange(e: KeyboardEvent): void {
+    private onInputChange = (e: KeyboardEvent) => {
         const inputElement = e.target as HTMLInputElement;
         this._handlers.onInput(
-            inputElement.name as keyof Subject,
+            inputElement.name as keyof T,
             inputElement.value,
             inputElement.validationMessage
         );
     }
 
-    private _onSubmit(e: SubmitEvent): void {
+    private submitHandler = (e: SubmitEvent) => {
         e.preventDefault();
         this._handlers.onSubmit();
     }

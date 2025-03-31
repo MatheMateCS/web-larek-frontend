@@ -11,17 +11,17 @@ export class ApplicationState {
         this.__user = { payment: 'Онлайн', address: '', email: '', phone: ''};
     }
 
-    set catalog(catalog: ProductList) {
-        this.__catalog = catalog;
+    set catalog(catalog: ProductItem[]) {
+        this.__catalog = { total: catalog.length, items: catalog } as ProductList;
         this.events.emit('catalog:set');
     }
 
-    get catalog(): ProductList {
-        return this.__catalog;
+    get catalog(): ProductItem[] {
+        return this.__catalog.items;
     }
 
-    get basket(): ProductList {
-        return this.__basket;
+    get basket(): ProductItem[] {
+        return this.__basket.items;
     }
 
     get basketTotalSum(): number {
@@ -36,7 +36,7 @@ export class ApplicationState {
         return this.__user;
     }
 
-    getCatalogProductItemById(id: string): ProductItem {
+    getCatalogProductItemById(id: number | string): ProductItem | undefined {
         return this.__catalog.items.find((item) => item.id === String(id));
     }
 
@@ -68,13 +68,21 @@ export class ApplicationState {
         let isValid = true;
         const errorList: string[] = [];
         // TODO: proper validation of address and payment
-        return { isValid, errorList };
+        if (!this.user.address.length) {
+			errorList.push('Заполните адрес доставки');
+			isValid = false;
+		}
+		if (!this.user.payment.length) {
+			errorList.push('Выберите тип оплаты');
+			isValid = false;
+		}
+        return { isValid: isValid, errorList: errorList };
     }
 
     validateContactsInfo(): FormInfo {
         let isValid = true;
         const errorList: string[] = [];
         // TODO: proper validation of email and phone
-        return { isValid, errorList };
+        return { isValid: isValid, errorList: errorList };
     }
 }

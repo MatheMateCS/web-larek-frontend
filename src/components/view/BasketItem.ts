@@ -1,8 +1,8 @@
-import { IBasket, IBasketItem, ProductItem } from "../../types";
+import { IBasketItem, BasketItemInfo } from "../../types";
 import { ensureElement } from "../../utils/utils";
 import { Component } from "./Component";
 
-export abstract class BasketItem<Context> extends Component<ProductItem & Context> {
+export abstract class BasketItem<T> extends Component<BasketItemInfo & T> {
     private __orderNumberElement: HTMLSpanElement;
     private __titleElement: HTMLSpanElement;
     private __priceElement: HTMLSpanElement;

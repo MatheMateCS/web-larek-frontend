@@ -1,6 +1,6 @@
 import { Api } from '../base/api';
 import { API_URL, CDN_URL } from '../../utils/constants';
-import { ProductList, ProductItem, OrderInfo, Order } from '../../types/index';
+import { ProductList, ProductItem, PostOrderData, Order } from '../../types/index';
 
 export class ServerApi extends Api {
     constructor() {
@@ -28,7 +28,7 @@ export class ServerApi extends Api {
         return this._completeProductInfo(product);
     }
 
-    postOrder(orderInfo: OrderInfo): Promise<Order> {
+    postOrder(orderInfo: PostOrderData): Promise<Order> {
         return this.post('/order', orderInfo) as Promise<Order>;
     }
 }

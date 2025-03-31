@@ -23,7 +23,7 @@ export abstract class Basket extends Component<BasketInfo> {
         this._basketListElement.innerHTML = null;
     }
 
-    set isDisabled(isDisabled: boolean) {
+    set disableBuyButton(isDisabled: boolean) {
         this.setDisabled(this._basketButtonElement, isDisabled);
     }
 

@@ -29,7 +29,7 @@ export abstract class Modal extends Component<ModalInfo> {
 
     public close() {
         this.container.classList.remove('modal_active');
-        this._content = null;
+        this.content = null;
         this._handlers?.onClose();
     }
 
