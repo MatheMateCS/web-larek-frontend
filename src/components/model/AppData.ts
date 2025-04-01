@@ -79,10 +79,33 @@ export class ApplicationState {
         return { isValid: isValid, errorList: errorList };
     }
 
+    private __countDigits(data: string) {
+        let count: number = 0;
+        for(let i = 0; i < data.length; i++) {
+            if ('0' <= data[i] && data[i] <= '9') count ++;
+        }
+        return count;
+    }
+
     validateContactsInfo(): FormInfo {
         let isValid = true;
         const errorList: string[] = [];
         // TODO: proper validation of email and phone
+        if (! this.user.email.length) {
+            errorList.push('Заполните поле email');
+            isValid = false;
+        } else if (this.user.email.length < 3 || !this.user.email.includes('@')) {
+            errorList.push('Некорректный email');
+            isValid = false;
+        }
+        if (! this.user.phone.length) {
+            errorList.push('Заполните номер телефона');
+            isValid = false;
+        } else if (this.__countDigits(this.user.phone) != 11 || ! /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/.test(this.user.phone)) {
+            errorList.push('Некорректный номер телефона');
+            isValid = false;
+        }
+        console.log(isValid, errorList);
         return { isValid: isValid, errorList: errorList };
     }
 }

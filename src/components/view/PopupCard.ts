@@ -25,7 +25,7 @@ export class PopupCard extends Card<PopupCardInfo> {
         this.setText(this.__descriptionElement, description);
     }
 
-    set disableBuyButton(isDisable: boolean) {
+    set isDisabled(isDisable: boolean) {
         this.setDisabled(this._buttonElement, isDisable);
     }
 }

@@ -30,7 +30,7 @@ export abstract class BasketItem<T> extends Component<BasketItemInfo & T> {
         this.setText(this.__priceElement, text);
     }
 
-    set orderNumber(orderNumber: string) {
+    set index(orderNumber: string) {
         this.setText(this.__orderNumberElement, orderNumber);
     }
 }
