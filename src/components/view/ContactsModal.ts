@@ -1,6 +1,6 @@
 import { IEvents, ContactsInfo } from "../../types";
 import { cloneTemplate } from "../../utils/utils";
-import { Form } from "./Form";
+import { Form } from "./abstracts/Form";
 
 export class ContactsModal extends Form<ContactsInfo> {
     constructor(events: IEvents) {

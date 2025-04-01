@@ -1,5 +1,5 @@
-import { IForm, FormInfo } from "../../types";
-import { ensureElement } from "../../utils/utils";
+import { IForm, FormInfo } from "../../../types";
+import { ensureElement } from "../../../utils/utils";
 import { Component } from "./Component";
 
 export abstract class Form<T> extends Component<FormInfo> {

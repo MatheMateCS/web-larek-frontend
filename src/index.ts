@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { ensureElement } from './utils/utils';
-import { EventEmitter } from './components/base/events';
+import { EventEmitter } from './components/presenter/events';
 import { ServerApi } from "./components/api/ServerApi";
 import { ApplicationState } from './components/model/AppData';
 import { CatalogCard } from './components/view/CatalogCard';
@@ -152,3 +152,8 @@ server.getProductList()
 
 // Проверка ответа сервера для отладки
 console.log(server.getProductList());
+
+console.log(fetch('https://larek-api.nomoreparties.co/api/weblarek/product', {
+    headers: {'Content-Type': 'application/json' }, 
+    method: 'GET'
+}));

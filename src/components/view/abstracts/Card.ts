@@ -1,5 +1,5 @@
-import { ICard, Category, CardInfo } from "../../types";
-import { ensureElement } from "../../utils/utils";
+import { ICard, Category, CardInfo } from "../../../types";
+import { ensureElement } from "../../../utils/utils";
 import { Component } from "./Component";
 
 export abstract class Card<T> extends Component<CardInfo & T> {

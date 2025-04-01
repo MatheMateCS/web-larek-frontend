@@ -1,5 +1,5 @@
-import { IModal, ModalInfo } from "../../types";
-import { ensureElement } from "../../utils/utils";
+import { IModal, ModalInfo } from "../../../types";
+import { ensureElement } from "../../../utils/utils";
 import { Component } from "./Component";
 
 export abstract class Modal extends Component<ModalInfo> {

@@ -1,6 +1,6 @@
 import { IEvents, OrderInfo } from "../../types";
 import { cloneTemplate, ensureElement } from "../../utils/utils";
-import { Form } from "./Form";
+import { Form } from "./abstracts/Form";
 
 export class OrderModal extends Form<OrderInfo> {
     private __onlineTypeButtonElement: HTMLButtonElement;

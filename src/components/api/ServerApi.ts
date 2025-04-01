@@ -1,4 +1,4 @@
-import { Api } from '../base/api';
+import { Api } from './api';
 import { API_URL, CDN_URL } from '../../utils/constants';
 import { ProductList, ProductItem, PostOrderData, Order } from '../../types/index';
 

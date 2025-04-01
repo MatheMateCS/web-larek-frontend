@@ -1,5 +1,5 @@
-import { IBasket, BasketInfo } from "../../types";
-import { ensureElement } from "../../utils/utils";
+import { IBasket, BasketInfo } from "../../../types";
+import { ensureElement } from "../../../utils/utils";
 import { Component } from "./Component";
 
 export abstract class Basket extends Component<BasketInfo> {
@@ -23,7 +23,7 @@ export abstract class Basket extends Component<BasketInfo> {
         this._basketListElement.innerHTML = null;
     }
 
-    set disableBuyButton(isDisabled: boolean) {
+    set isDisabled(isDisabled: boolean) {
         this.setDisabled(this._basketButtonElement, isDisabled);
     }
 

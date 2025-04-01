@@ -1,6 +1,6 @@
 import { IEvents, BasketItemBarInfo } from "../../types";
 import { cloneTemplate } from "../../utils/utils";
-import { BasketItem } from "./BasketItem";
+import { BasketItem } from "./abstracts/BasketItem";
 
 export class BasketItemBar extends BasketItem<BasketItemBarInfo> {
     constructor(events: IEvents) {

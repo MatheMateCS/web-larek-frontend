@@ -1,6 +1,6 @@
 import { CatalogCardInfo, IEvents } from "../../types";
 import { cloneTemplate } from "../../utils/utils";
-import { Card } from "./Card";
+import { Card } from "./abstracts/Card";
 
 export class CatalogCard extends Card<CatalogCardInfo> {
     constructor(events: IEvents) {

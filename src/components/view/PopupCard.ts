@@ -1,6 +1,6 @@
 import { IEvents, PopupCardInfo } from "../../types";
 import { cloneTemplate, ensureElement } from "../../utils/utils";
-import { Card } from "./Card";
+import { Card } from "./abstracts/Card";
 
 export class PopupCard extends Card<PopupCardInfo> {
     private __descriptionElement: HTMLParagraphElement;

@@ -1,5 +1,5 @@
-import { IBasketItem, BasketItemInfo } from "../../types";
-import { ensureElement } from "../../utils/utils";
+import { IBasketItem, BasketItemInfo } from "../../../types";
+import { ensureElement } from "../../../utils/utils";
 import { Component } from "./Component";
 
 export abstract class BasketItem<T> extends Component<BasketItemInfo & T> {
