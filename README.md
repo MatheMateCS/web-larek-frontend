@@ -5,7 +5,6 @@
 Структура проекта:
 - src/ — исходные файлы проекта
 - src/components/ — папка с JS компонентами
-- src/components/base/ — папка с базовым кодом
 
 Важные файлы:
 - src/pages/index.html — HTML-файл главной страницы
@@ -114,7 +113,6 @@ yarn build
 * кнопка закрытия модального окна
 
 
-
 ### Брокер событий
 
 Брокер событий реализует принцип выдачи сигнала слушателям при наступлении определенного события.
@@ -169,78 +167,6 @@ Order = {
 }
 ```
 
-### Model
-
-Модель будет описывать хранение и обработку имеющихся на сайте данных. В нашем случае основные данные - товары и информация о пользователе.
-
-Для описания товара будем использовать уже созданный тип `ProductItem`
-
-Тогда хранилище товаров можно определить как:
-
-```ts
-interface IProductCollection {
-    __amount: number;
-    __items: ProductItem[];
-
-    getItems(): ProductItem[];
-    isEmpty(): boolean;
-}
-```
-
-Мы будем работать с двумя хранилищами: **каталогом** и **корзиной**. Поэтому определим их контракты:
-
-```ts
-interface ICatalog extends IProductCollection {
-    constructor(products?: ProductList): void;
-    refill(products: ProductList): void;
-}
-```
-
-```ts
-interface IBusket extends IProductCollection {
-    constructor(): void;
-    add(): void;
-    remove(id: string): void;
-    clear(): void;
-    calcTotalSum(): number;
-}
-```
-
-Помимо товаров также необходимо обрабатывать данные пользователя. Для этого определим объект `UserInfo`:
-
-```ts
-UserInfo = {
-    payment: PaymentType,
-    address: string,
-    email: string,
-    phone: string
-}
-
-, где
-
-PaymentType = 'Онлайн' | 'При получении'
-```
-
-В таком случае полная информация о заказе представляет собой тип `OrderInfo`:
-
-```ts
-OrderInfo = UserInfo & ProductList
-```
-Чтобы работать с объектом пользователя динамически, определим интерфейс пользователя:
-
-```ts
-interface IUser {
-    __info: UserInfo;
-
-    constructor(): void;
-    setPaymentType(payment: PaymentType): void;
-    setAddress(address: string): void;
-    setEmail(email: string): void;
-    setPhone(phone: string): void;
-    resetAll(): void;
-} 
-```
-
 ### Presenter
 
 Перенесем из events.ts уже написанные типы для обеспечения связей сигнал-обработчик.
@@ -281,88 +207,149 @@ interface IEvents {
 
 Опишем основные типы, необходимые для структуризации отображения логики приложения.
 
-Общий интерфейс `IView`, который предоставит контракт для отображаемых элементов:
+В приложении имеются следующие компоненты: Карточка (Card), Форма (Form), Модальное окно (Modal), Окно успешного оформления заказа (Success), Корзина (Basket), Элемент корзины (BasketItem). Для удобной реализации каждого из компонентов необходимо описать их особенные свойства и набор поддерживаемых методов для работы с ними. Свойства будем оформлять в виде объектных типов, а методы в виде интерфейсов-контрактов.
+
+Типы для компонента корзины:
 
 ```ts
-interface IView {
-    _content: HTMLElement;
+export type BasketInfo = {
+    totalSum: string | number,
+    isDisabled: boolean
+    items: HTMLElement[],
+};
 
-    constructor(content: HTMLElement): void;
-    render(data?: object): HTMLElement;
+export interface IBasket {
+    onBuy(): void;
 }
 ```
 
-Специальный тип, который отвечает за состояние кнопки добавления в корзину:
+Типы для элемента корзины:
 
 ```ts
-BuyButtonState = 'disabled' | 'already' | 'able';
-```
+export type BasketItemInfo = {
+    title: string,
+    price: string | number | null,
+    index: number | string
+};
 
-Интерфейс карточки товара:
-
-```ts
-interface ICard extends IView {
-    _data: ProductItem;
-
-    setProduct(data: ProductItem): void;    
-}
-```
-
-Интерфейс элемента корзины:
-
-```ts
-interface IBusketItem extends ICard {
+export interface IBasketItem {
     onRemove(): void;
-}
+};
+
+export type BasketItemBarInfo = {
+    id: string
+} & BasketItemInfo;
 ```
-Контракт для модальных окон:
+
+Типы для карточки:
 
 ```ts
-interface IModal extends IView {
+export type CardInfo = {
+    category: Category,
+    title: string
+    image: string,
+    price: number | null
+}
+
+export interface ICard {
+    onClick(): void;
+}
+```
+
+Типы для формы:
+
+```ts
+export type FormInfo = {
+    isValid: boolean;
+    errorList: string[];
+}
+
+export interface IForm<T> {
+    onSubmit(): void;
+    onInput(field: keyof T, value: string, message: string): void;
+};
+```
+
+Типы для модальных окон:
+
+```ts
+export type ModalInfo = {
+    content: HTMLElement;
+}
+
+export interface IModal {
     onOpen(): void;
     onClose(): void;
 }
 ```
 
-Контракт формы:
+Типы для окна успешного оформления:
 
 ```ts
-interface IForm {
-    __isValid: boolean;
-    _content: HTMLElement;
-    _errors: FormError[];
-    
-    checkValidity(): boolean;
-    getErrors(): FormError[];
+export type SuccessInfo = {
+    totalSum: number;
 }
 
-, где
-
-FormError = 'address' | 'email' | 'phone'
+export interface ISuccess {
+    onClick(): void;
+};
 ```
 
-Ну и наконец, модальное окно с формой:
+Типы для карточки в попапе и в каталоге:
 
 ```ts
-interface IModalForm extends IModal {
-    form: IForm;
+export type PopupCardInfo = {
+    id: string,
+    description: string,
+    isDisabled: boolean
+} & CardInfo;
+
+export type CatalogCardInfo = {
+    id: string
+} & CardInfo;
+```
+
+Типы для модальных окон с информацией о заказе и контактной информацией:
+
+```ts
+export type ContactsInfo = {
+    email: string,
+    phone: string
+}
+
+export type OrderInfo = {
+    payment: string,
+    address: string
 }
 ```
 
-### UML-диаграммы интерфейсов
+### Model
 
-Объекты при вз-ии с API:
+Модель будет описывать хранение и обработку имеющихся на сайте данных. В нашем случае основные данные - товары и информация о пользователе. Данные уже описаны в разделе API. Осталось описать пользователя:
 
-![API](./docs/images/api.png)
+```ts
+export type UserInfo = OrderInfo & ContactsInfo;
+```
 
-Модель:
 
-![Model](./docs/images/model.png)
+## Реализация
 
-Брокер событий:
+Представим реализацию наглядно, в виде UML-диаграммы классов для каждого из модулей архитектуры.
 
-![Presenter](./docs/images/presenter.png)
+### UML-диаграммы классов
 
-Представление:
+API:
 
-![View](./docs/images/view.png)
+![API](./docs/uml/api.png)
+
+Model:
+
+![Model](./docs/uml/model.png)
+
+Presenter:
+
+![Presenter](./docs/uml/presenter.png)
+
+View:
+
+![View](./docs/uml/view.png)

@@ -30,8 +30,8 @@ export type BasketInfo = {
     items: HTMLElement[],
 };
 
-export type IBasket = {
-    onBuy: () => void;
+export interface IBasket {
+    onBuy(): void;
 }
 
 export type BasketItemInfo = {
@@ -40,8 +40,8 @@ export type BasketItemInfo = {
     index: number | string
 };
 
-export type IBasketItem = {
-    onRemove: () => void;
+export interface IBasketItem {
+    onRemove(): void;
 };
 
 export type Category = 'софт-скил' 
@@ -50,8 +50,8 @@ export type Category = 'софт-скил'
                     | 'кнопка' 
                     | 'хард-скил';
 
-export type ICard = {
-    onClick: () => void;
+export interface ICard {
+    onClick(): void;
 }
 
 export type CardInfo = {
@@ -66,26 +66,26 @@ export type FormInfo = {
     errorList: string[];
 }
 
-export type IForm<T> = {
-    onSubmit: () => void;
-    onInput: (field: keyof T, value: string, message: string) => void;
+export interface IForm<T> {
+    onSubmit(): void;
+    onInput(field: keyof T, value: string, message: string): void;
 };
 
 export type ModalInfo = {
     content: HTMLElement;
 }
 
-export type IModal = {
-    onOpen: () => void;
-    onClose: () => void;
+export interface IModal {
+    onOpen(): void;
+    onClose(): void;
 }
 
 export type SuccessInfo = {
     totalSum: number;
 }
 
-export type ISuccess = {
-    onClick: () => void;
+export interface ISuccess {
+    onClick(): void;
 };
 
 export type PopupCardInfo = {

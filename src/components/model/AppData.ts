@@ -67,7 +67,6 @@ export class ApplicationState {
     validateOrderInfo(): FormInfo {
         let isValid = true;
         const errorList: string[] = [];
-        // TODO: proper validation of address and payment
         if (!this.user.address.length) {
 			errorList.push('Заполните адрес доставки');
 			isValid = false;
@@ -90,7 +89,6 @@ export class ApplicationState {
     validateContactsInfo(): FormInfo {
         let isValid = true;
         const errorList: string[] = [];
-        // TODO: proper validation of email and phone
         if (! this.user.email.length) {
             errorList.push('Заполните поле email');
             isValid = false;
