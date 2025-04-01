@@ -2,97 +2,9 @@
 // Зато когда захотите поменять это достаточно сделать в одном месте
 
 /**
- * Типы для работы с сервером
- */
-
-// export type ApiListResponse<Type> = {
-//     total: number,
-//     items: Type[]
-// };
-
-export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
-
-export type Category = 'софт-скил' 
-                    | 'другое' 
-                    | 'дополнительное' 
-                    | 'кнопка' 
-                    | 'хард-скил';
-
-export type ProductItem = {
-    id: string,
-    description: string,
-    image: string,
-    title: string
-    category: Category,
-    price: number | null
-}
-
-export type ProductList = { // GET Product List
-    total: number,
-    items: ProductItem[]
-}
-
-export type Order = { // POST Order
-    id: string,
-    total: number
-}
-
-export type ErrorResponse = {
-    error: string
-}
-
-export type GetProductItemResponse = ProductList | ErrorResponse; // GET Product Item
-
-/**
- * Типы, связанные с моделью (Model)
- */
-
-export type PaymentType = 'Онлайн' | 'При получении'
-
-export type UserInfo = {
-    payment: PaymentType,
-    address: string,
-    email: string,
-    phone: string
-}
-
-export type OrderInfo = UserInfo & ProductList
-
-export interface IUser {
-    __info: UserInfo;
-
-    constructor(): void;
-    setPaymentType(payment: PaymentType): void;
-    setAddress(address: string): void;
-    setEmail(email: string): void;
-    setPhone(phone: string): void;
-    resetAll(): void;
-} 
-
-export interface IProductCollection {
-    __amount: number;
-    __items: ProductItem[];
-
-    getItems(): ProductItem[];
-    isEmpty(): boolean;
-}
-
-export interface ICatalog extends IProductCollection {
-    constructor(products?: ProductList): void;
-    refill(products: ProductList): void;
-}
-
-export interface IBusket extends IProductCollection {
-    constructor(): void;
-    add(): void;
-    remove(id: string): void;
-    clear(): void;
-    calcTotalSum(): number;
-}
-
-/**
  * Типы, связанные с брокером событий (Presenter)
  */
+
 export type EventName = string | RegExp;
 
 export type Subscriber = Function;
@@ -108,46 +20,127 @@ export interface IEvents {
     trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void;
 }
 
-
 /**
  * Типы, связанные с представлением (View)
  */
 
-export interface IView {
-    _content: HTMLElement;
+export type BasketInfo = {
+    totalSum: string | number,
+    isDisabled: boolean
+    items: HTMLElement[],
+};
 
-    constructor(content: HTMLElement): void;
-    render(data?: object): HTMLElement;
+export type IBasket = {
+    onBuy: () => void;
 }
 
-export type BuyButtonState = 'disabled' | 'already' | 'able';
+export type BasketItemInfo = {
+    title: string,
+    price: string | number | null,
+    index: number | string
+};
 
-export interface ICard extends IView {
-    _data: ProductItem;
+export type IBasketItem = {
+    onRemove: () => void;
+};
 
-    setProduct(data: ProductItem): void;    
+export type Category = 'софт-скил' 
+                    | 'другое' 
+                    | 'дополнительное' 
+                    | 'кнопка' 
+                    | 'хард-скил';
+
+export type ICard = {
+    onClick: () => void;
 }
 
-export interface IBusketItem extends ICard {
-    onRemove(): void;
+export type CardInfo = {
+    category: Category,
+    title: string
+    image: string,
+    price: number | null
 }
 
-export interface IModal extends IView {
-    onOpen(): void;
-    onClose(): void;
+export type FormInfo = {
+    isValid: boolean;
+    errorList: string[];
 }
 
-export type FormError = 'address' | 'email' | 'phone'
+export type IForm<T> = {
+    onSubmit: () => void;
+    onInput: (field: keyof T, value: string, message: string) => void;
+};
 
-export interface IForm {
-    __isValid: boolean;
-    _content: HTMLElement;
-    _errors: FormError[];
-    
-    checkValidity(): boolean;
-    getErrors(): FormError[];
+export type ModalInfo = {
+    content: HTMLElement;
 }
 
-export interface IModalForm extends IModal {
-    form: IForm;
+export type IModal = {
+    onOpen: () => void;
+    onClose: () => void;
 }
+
+export type SuccessInfo = {
+    totalSum: number;
+}
+
+export type ISuccess = {
+    onClick: () => void;
+};
+
+export type PopupCardInfo = {
+    id: string,
+    description: string,
+    isDisabled: boolean
+} & CardInfo;
+
+export type CatalogCardInfo = {
+    id: string
+} & CardInfo;
+
+export type ContactsInfo = {
+    email: string,
+    phone: string
+}
+
+export type OrderInfo = {
+    payment: string,
+    address: string
+}
+
+export type BasketItemBarInfo = {
+    id: string
+} & BasketItemInfo;
+
+/**
+ * Типы для работы с сервером (API) и моделью (Model)
+ */
+export type ApiListResponse<Type> = {
+	total: number;
+	items: Type[];
+};
+
+export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
+
+export type ProductList = { // GET Product List
+    total: number,
+    items: ProductItem[]
+}
+
+export type ProductItem = {
+    id: string,
+    description: string,
+    image: string,
+    title: string
+    category: Category,
+    price: number | null
+}
+
+export type Order = { // POST Order
+    id: string,
+    total: number
+}
+
+export type UserInfo = OrderInfo & ContactsInfo;
+
+export type PostOrderData = UserInfo & { total: number, items: string[] }
